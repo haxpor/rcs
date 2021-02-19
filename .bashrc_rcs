@@ -1,0 +1,112 @@
+# RCS - Recursive Code Search
+# See --help for more detail on usage
+# Author: Wasin Thonkaew
+# License: MIT
+#
+# Insallation: Just source it from your ~/.bashrc or better yet ~/.bash_aliases
+rcs() {
+	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n]\n"
+	help_msg="${help_usage_msg}Use --help for full detailed help message.\n"
+
+    if [ "$#" -eq 0 ]; then
+        echo "Empty arguments."
+		printf "${help_msg}"
+        return 1
+    fi
+
+	if [ "$1" == "--help" ]; then
+		printf "${help_usage_msg}"
+		echo "List of formats supported (-f argument)"
+		echo "  cmake    - .cmake, .txt"
+		echo "  header   - .h, .hpp"
+		echo "  vs       - .vcxproj"
+		echo "  c        - .h, .c"
+		echo "  py       - .py"
+		echo "  impl-c   - .c"
+		echo "  impl-cpp - .cpp"
+		return 0
+	fi
+
+    format_flag=''
+    search_term=''
+	ignore_case=0
+	no_color_output=0
+	before_num_lines=0
+	after_num_lines=0
+
+    local OPTIND f s flag
+    while getopts 'f:s:A:B:in' flag; do
+        case "${flag}" in
+            f) format_flag="${OPTARG}" ;;
+            s) search_term="${OPTARG}" ;;
+			i) ignore_case=1 ;;
+			n) no_color_output=1 ;;
+			B) before_num_lines=${OPTARG} ;;
+			A) after_num_lines=${OPTARG} ;;
+            :)
+                echo "Unrecognize parameter."
+				printf "${help_msg}"
+                return 1 ;;
+        esac
+    done
+    shift $((OPTIND -1))
+
+    # if format flag is empty, then set it to cpp
+    if [ -z "${format_flag}" ]; then
+        format_flag="cpp"
+    fi
+
+	grep_prefix="grep -nr"
+
+	# check to apply ignore case to grep search
+	if [ "${ignore_case}" == 1 ]; then
+		grep_prefix="${grep_prefix}i"
+	fi
+	# check to apply no color output
+	if [ "${no_color_output}" == 0 ]; then
+		grep_prefix="${grep_prefix} --color=always"
+	fi
+	# check to include before lines
+	if [ "${before_num_lines}" -gt 0 ]; then
+		grep_prefix="${grep_prefix} -B ${before_num_lines}"
+	fi
+	# check to include after lines
+	if [ "${after_num_lines}" -gt 0 ]; then
+		grep_prefix="${grep_prefix} -A ${after_num_lines}"
+	fi
+
+    if [ "${format_flag}" == "cmake" ]; then
+        # cmake
+        echo "${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt"
+        ${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt
+    elif [ "${format_flag}" == "header" ]; then
+        # header
+        echo "${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp"
+        ${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp
+    elif [ "${format_flag}" == "vs" ]; then
+        # vsproj
+        echo "${grep_prefix} "${search_term}" --include=\*.vcxproj"
+        ${grep_prefix} "${search_term}" --include=\*.vcxproj
+    elif [ "${format_flag}" == "c" ]; then
+        # c
+        echo "${grep_prefix} "${search_term}" --include=\*.h --include=\*.c"
+        ${grep_prefix} "${search_term}" --include=\*.h --include=\*.c
+    elif [ "${format_flag}" == "py" ]; then
+        # python
+        echo "${grep_prefix} "${search_term}" --include=\*.py"
+        ${grep_prefix} "${search_term}" --include=\*.py
+    elif [ "${format_flag}" == "impl-c" ]; then
+        # impl-c
+        echo "${grep_prefix} "${search_term}" --include=\*.c"
+        ${grep_prefix} "${search_term}" --include=\*.c
+    elif [ "${format_flag}" == "impl-cpp" ]; then
+		# impl-cpp
+        echo "${grep_prefix} "${search_term}" --include=\*.cpp"
+        ${grep_prefix} "${search_term}" --include=\*.cpp
+    else
+        # default to cpp
+        echo "${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h"
+        ${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h
+    fi
+}
+
