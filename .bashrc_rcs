@@ -24,6 +24,8 @@ rcs() {
 		echo "  py       - .py"
 		echo "  impl-c   - .c"
 		echo "  impl-cpp - .cpp"
+		echo "  c-sharp  - .cs"
+		echo "  any      - .*"
 		return 0
 	fi
 
@@ -103,6 +105,14 @@ rcs() {
 		# impl-cpp
         echo "${grep_prefix} "${search_term}" --include=\*.cpp"
         ${grep_prefix} "${search_term}" --include=\*.cpp
+	elif [ "${format_flag}" == "c-sharp" ]; then
+		# c-sharp
+		echo "${grep_prefix} "${search_term}" --include=\*.cs"
+		${grep_prefix} "${search_term}" --include=\*.cs
+	elif [ "${format_flag}" == "any" ]; then
+		# any
+		echo "${grep_prefix} "${search_term}""
+		${grep_prefix} "${search_term}"
     else
         # default to cpp
         echo "${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h"
