@@ -87,43 +87,43 @@ rcs() {
 
 	if [ "${format_flag}" == "cmake" ]; then
 		# cmake	
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cmake --include=\*.txt"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "header" ]; then
 		# header
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.hpp"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "vs" ]; then
 		# vsproj
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.vcxproj"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.vcxproj"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "c" ]; then
 		# c
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.h --include=\*.c"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.c"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "py" ]; then
 		# python
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.py"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.py"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "impl-c" ]; then
 		# impl-c
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.c"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.c"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "impl-cpp" ]; then
 		# impl-cpp
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.cpp"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cpp"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "c-sharp" ]; then
 		# c-sharp
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.cs"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cs"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "any" ]; then
 		# any
-		full_cmd="${grep_prefix} "${search_term}
+		full_cmd="${grep_prefix} \"${search_term}\""
 		eval "$full_cmd"
 	else
 		# default to cpp
-		full_cmd="${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cpp --include=\*.h"
 		eval "${full_cmd}"
 	fi
 }
