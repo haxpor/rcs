@@ -45,7 +45,7 @@ rcs() {
 			n) no_color_output=1 ;;
 			B) before_num_lines=${OPTARG} ;;
 			A) after_num_lines=${OPTARG} ;;
-			:)
+			*)
 				echo "Unrecognize parameter."
 				printf "${help_msg}"
 				return 1 ;;
