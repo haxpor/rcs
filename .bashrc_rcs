@@ -8,11 +8,11 @@ rcs() {
 	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n]\n"
 	help_msg="${help_usage_msg}Use --help for full detailed help message.\n"
 
-    if [ "$#" -eq 0 ]; then
-        echo "Empty arguments."
+	if [ "$#" -eq 0 ]; then
+		echo "Empty arguments."
 		printf "${help_msg}"
-        return 1
-    fi
+		return 1
+	fi
 
 	if [ "$1" == "--help" ]; then
 		printf "${help_usage_msg}"
@@ -29,34 +29,34 @@ rcs() {
 		return 0
 	fi
 
-    format_flag=''
-    search_term=''
+	format_flag=''
+	search_term=''
 	ignore_case=0
 	no_color_output=0
 	before_num_lines=0
 	after_num_lines=0
 
-    local OPTIND f s flag
-    while getopts 'f:s:A:B:in' flag; do
-        case "${flag}" in
-            f) format_flag="${OPTARG}" ;;
-            s) search_term="${OPTARG}" ;;
+	local OPTIND f s flag
+	while getopts 'f:s:A:B:in' flag; do
+		case "${flag}" in
+			f) format_flag="${OPTARG}" ;;
+			s) search_term="${OPTARG}" ;;
 			i) ignore_case=1 ;;
 			n) no_color_output=1 ;;
 			B) before_num_lines=${OPTARG} ;;
 			A) after_num_lines=${OPTARG} ;;
-            :)
-                echo "Unrecognize parameter."
+			:)
+				echo "Unrecognize parameter."
 				printf "${help_msg}"
-                return 1 ;;
-        esac
-    done
-    shift $((OPTIND -1))
+				return 1 ;;
+		esac
+	done
+	shift "$((OPTIND -1))"
 
-    # if format flag is empty, then set it to cpp
-    if [ -z "${format_flag}" ]; then
-        format_flag="cpp"
-    fi
+	# if format flag is empty, then set it to cpp
+	if [ -z "${format_flag}" ]; then
+		format_flag="cpp"
+	fi
 
 	grep_prefix="grep -nr"
 
@@ -77,46 +77,48 @@ rcs() {
 		grep_prefix="${grep_prefix} -A ${after_num_lines}"
 	fi
 
-    if [ "${format_flag}" == "cmake" ]; then
-        # cmake
-        echo "${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt"
-        ${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt
-    elif [ "${format_flag}" == "header" ]; then
-        # header
-        echo "${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp"
-        ${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp
-    elif [ "${format_flag}" == "vs" ]; then
-        # vsproj
-        echo "${grep_prefix} "${search_term}" --include=\*.vcxproj"
-        ${grep_prefix} "${search_term}" --include=\*.vcxproj
-    elif [ "${format_flag}" == "c" ]; then
-        # c
-        echo "${grep_prefix} "${search_term}" --include=\*.h --include=\*.c"
-        ${grep_prefix} "${search_term}" --include=\*.h --include=\*.c
-    elif [ "${format_flag}" == "py" ]; then
-        # python
-        echo "${grep_prefix} "${search_term}" --include=\*.py"
-        ${grep_prefix} "${search_term}" --include=\*.py
-    elif [ "${format_flag}" == "impl-c" ]; then
-        # impl-c
-        echo "${grep_prefix} "${search_term}" --include=\*.c"
-        ${grep_prefix} "${search_term}" --include=\*.c
-    elif [ "${format_flag}" == "impl-cpp" ]; then
+	full_cmd=""
+
+	if [ "${format_flag}" == "cmake" ]; then
+		# cmake	
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.cmake --include=\*.txt"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "header" ]; then
+		# header
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.h --include=\*.hpp"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "vs" ]; then
+		# vsproj
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.vcxproj"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "c" ]; then
+		# c
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.h --include=\*.c"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "py" ]; then
+		# python
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.py"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "impl-c" ]; then
+		# impl-c
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.c"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "impl-cpp" ]; then
 		# impl-cpp
-        echo "${grep_prefix} "${search_term}" --include=\*.cpp"
-        ${grep_prefix} "${search_term}" --include=\*.cpp
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.cpp"
+		eval "$full_cmd"
 	elif [ "${format_flag}" == "c-sharp" ]; then
 		# c-sharp
-		echo "${grep_prefix} "${search_term}" --include=\*.cs"
-		${grep_prefix} "${search_term}" --include=\*.cs
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.cs"
+		eval "$full_cmd"
 	elif [ "${format_flag}" == "any" ]; then
 		# any
-		echo "${grep_prefix} "${search_term}""
-		${grep_prefix} "${search_term}"
-    else
-        # default to cpp
-        echo "${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h"
-        ${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h
-    fi
+		full_cmd="${grep_prefix} "${search_term}
+		eval "$full_cmd"
+	else
+		# default to cpp
+		full_cmd="${grep_prefix} "${search_term}" --include=\*.cpp --include=\*.h"
+		eval "${full_cmd}"
+	fi
 }
 
