@@ -5,7 +5,7 @@
 #
 # Insallation: Just source it from your ~/.bashrc or better yet ~/.bash_aliases
 rcs() {
-	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n|-v]\n"
+	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n|-v|-P|-o]\n"
 	help_msg="${help_usage_msg}Use --help for full detailed help message.\n"
 
 	if [ "$#" -eq 0 ]; then
@@ -36,9 +36,11 @@ rcs() {
 	before_num_lines=0
 	after_num_lines=0
 	is_inverse_search_enabled=0
+	perl_regex_enabled=0
+	output_only_match=0
 
 	local OPTIND f s flag
-	while getopts 'f:s:A:B:inv' flag; do
+	while getopts 'f:s:A:B:invPo' flag; do
 		case "${flag}" in
 			f) format_flag="${OPTARG}" ;;
 			s) search_term="${OPTARG}" ;;
@@ -47,6 +49,8 @@ rcs() {
 			B) before_num_lines=${OPTARG} ;;
 			A) after_num_lines=${OPTARG} ;;
 			v) is_inverse_search_enabled=1 ;;
+			P) perl_regex_enabled=1 ;;
+			o) output_only_match=1 ;;
 			*)
 				echo "Unrecognize parameter."
 				printf "${help_msg}"
@@ -81,6 +85,14 @@ rcs() {
 	# check to do inverse search
 	if [[ "${is_inverse_search_enabled}" -eq 1 ]]; then
 		grep_prefix="${grep_prefix} -v"
+	fi
+	# check to enable perl-regex
+	if [[ "${perl_regex_enabled}" -eq 1 ]]; then
+		grep_prefix="${grep_prefix} -P"
+	fi
+	# check to output only matches
+	if [[ "${output_only_match}" -eq 1 ]]; then
+		grep_prefix="${grep_prefix} -o"
 	fi
 
 	full_cmd=""
