@@ -1,3 +1,4 @@
+[![donate button](https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat)](https://github.com/haxpor/donate)
 # rcs
 
 Recursive Code Search for convenient on top of `grap -nr` as shell function.
