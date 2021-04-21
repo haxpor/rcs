@@ -64,7 +64,7 @@ rcs() {
 		format_flag="cpp"
 	fi
 
-	grep_prefix="grep -nr"
+	grep_prefix="egrep -nr"
 
 	# check to apply ignore case to grep search
 	if [[ "${ignore_case}" == 1 ]]; then
