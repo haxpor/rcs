@@ -12,7 +12,21 @@ to source such file like following
 . ~/.bashrc_rcs
 ```
 
+# Available flags
+
+* `-f <file-type>` - specify the type of file for the tool to find recursively. The available types can be found via `rcs --help`, 
+* `-s <search-term>` - specify the search term, this will be parsed the same if specified to `grep`
+* `-i` - specify that searching would be in case-insensitive case
+* `-n` - specify that there would be no color output as output from the tool so you can be sure it will be compatible with tool that read its output as input
+* `-B` - specify number of lines to include before the matched search term
+- `-A` - specify number of lines to include after the matched search term
+- `-v` - specify to use inverse search mode, that means not include that specified search term
+- `-P` - specify to enable perl regex
+- `-o` - specify to output only matched result
+
 # Usage
+
+For some of flags usage, see below.
 
 After installation, source either your `~/.bashrc` or `~/.bash_aliases` with `source <file>` (substitute
 your bash file into it), then you're ready to use it.
