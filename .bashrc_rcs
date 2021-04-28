@@ -59,6 +59,12 @@ rcs() {
 	done
 	shift "$((OPTIND -1))"
 
+	# if search term is not specified then early quit now
+	if [ -z "${search_term}" ]; then
+		echo "Search term -s cannot be empty"
+		return 1
+	fi
+
 	# if format flag is empty, then set it to cpp
 	if [ -z "${format_flag}" ]; then
 		format_flag="cpp"
