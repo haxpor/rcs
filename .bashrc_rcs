@@ -119,6 +119,10 @@ rcs() {
 		# c
 		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.c"
 		eval "$full_cmd"
+	elif [ "${format_flag}" == "cpp" ]; then
+		# c
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.hpp --include=\*.cpp --include=\*.cxx --include=\*.cc"
+		eval "$full_cmd"
 	elif [ "${format_flag}" == "py" ]; then
 		# python
 		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.py"
@@ -129,7 +133,7 @@ rcs() {
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "impl-cpp" ]; then
 		# impl-cpp
-		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cpp"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cpp --include=\*.cxx --include=\*.cc"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "c-sharp" ]; then
 		# c-sharp
@@ -141,7 +145,7 @@ rcs() {
 		eval "$full_cmd"
 	else
 		# default to cpp
-		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cpp --include=\*.h"
+		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.hpp --include=\*.cpp --include=\*.cxx --include=\*.cc"
 		eval "${full_cmd}"
 	fi
 }
