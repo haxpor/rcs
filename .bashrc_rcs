@@ -21,6 +21,7 @@ rcs() {
 		echo "  header   - .h, .hpp"
 		echo "  vs       - .vcxproj"
 		echo "  c        - .h, .c"
+		echo "  cpp      - .h, .hpp, .cpp, .cxx, .cc"
 		echo "  py       - .py"
 		echo "  impl-c   - .c"
 		echo "  impl-cpp - .cpp"
@@ -120,7 +121,7 @@ rcs() {
 		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.c"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "cpp" ]; then
-		# c
+		# cpp
 		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.h --include=\*.hpp --include=\*.cpp --include=\*.cxx --include=\*.cc"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "py" ]; then
