@@ -5,7 +5,7 @@
 #
 # Insallation: Just source it from your ~/.bashrc or better yet ~/.bash_aliases
 rcs() {
-	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n|-v|-P|-o]\n"
+	help_usage_msg="Usage: rcs [-f <formats>] [-B <num>] [-A <num>] -s search_term [-i|-n|-v|-P|-o|-R]\n"
 	help_msg="${help_usage_msg}Use --help for full detailed help message.\n"
 
 	if [ "$#" -eq 0 ]; then
@@ -40,9 +40,10 @@ rcs() {
 	is_inverse_search_enabled=0
 	perl_regex_enabled=0
 	output_only_match=0
+	follow_symlink=0
 
 	local OPTIND f s flag
-	while getopts 'f:s:A:B:invPo' flag; do
+	while getopts 'f:s:A:B:invPoR' flag; do
 		case "${flag}" in
 			f) format_flag="${OPTARG}" ;;
 			s) search_term="${OPTARG}" ;;
@@ -53,6 +54,7 @@ rcs() {
 			v) is_inverse_search_enabled=1 ;;
 			P) perl_regex_enabled=1 ;;
 			o) output_only_match=1 ;;
+			R) follow_symlink=1 ;;
 			*)
 				echo "Unrecognize parameter."
 				printf "${help_msg}"
@@ -72,8 +74,15 @@ rcs() {
 		format_flag="cpp"
 	fi
 
-	grep_prefix="egrep -nr"
+	grep_prefix="egrep -n"
 
+	# check to apply following symlik
+	# do this first to avoid adding both -r and -R
+	if [[ "${follow_symlink}" -eq 1 ]]; then
+		grep_prefix="${grep_prefix}R"
+	else
+		grep_prefix="${grep_prefix}r"
+	fi
 	# check to apply ignore case to grep search
 	if [[ "${ignore_case}" == 1 ]]; then
 		grep_prefix="${grep_prefix}i"
