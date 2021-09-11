@@ -26,6 +26,7 @@ rcs() {
 		echo "  impl-c   - .c"
 		echo "  impl-cpp - .cpp"
 		echo "  c-sharp  - .cs"
+		echo "  make     - Makefile, Kbuild"
 		echo "  any      - .*"
 		return 0
 	fi
@@ -139,6 +140,10 @@ rcs() {
 	elif [ "${format_flag}" == "c-sharp" ]; then
 		# c-sharp
 		full_cmd="${grep_prefix} \"${search_term}\" --include=\*.cs"
+		eval "$full_cmd"
+	elif [ "${format_flag}" == "make" ]; then
+		# Makefile, and Kbuild used by Linux Kernel
+		full_cmd="${grep_prefix} \"${search_term}\" --include=Makefile --include=Kbuild"
 		eval "$full_cmd"
 	elif [ "${format_flag}" == "any" ]; then
 		# any
