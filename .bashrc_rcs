@@ -74,7 +74,13 @@ rcs() {
 		format_flag="cpp"
 	fi
 
-	grep_prefix="egrep -n"
+	# to avoid "conflicting matchers specified" as we cannot use 'egrep' and
+	# perl regex at the same time.
+	if [[ "${perl_regex_enabled}" -eq 0 ]]; then
+		grep_prefix="egrep -n"
+	else
+		grep_prefix="grep -n"
+	fi
 
 	# check to apply following symlik
 	# do this first to avoid adding both -r and -R
