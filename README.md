@@ -5,12 +5,30 @@ Recursive Code Search for convenient on top of `grap -nr` as shell function.
 
 # Installation
 
+## Manual
+
 Put `.bashrc_rcs` file into your home directory, then edit your `~/.bashrc` or better yet `~/.bash_aliases`
 to source such file like following
 
 ```
 . ~/.bashrc_rcs
 ```
+
+## PPA package
+
+## Non-pinning way (direct install)
+
+Easiest way to install without having to pinning priority of package (thus a need
+to edit some files)
+
+* `sudo add-apt-repository ppa:haxpor/combined`
+* `sudo apt-cache showpkg rcs` - due to there is existing same name package offered by Ubuntu
+* Grab the version string in `Versions:` section that corresponding to `rcs` package offered by `haxpor`
+* `sudo apt install rcs=<version-string>`
+
+## Pinning package with higher priority
+
+See this [article](https://www.claudiokuenzler.com/blog/440/higher-preference-priority-apt-repository-over-another).
 
 # Available flags
 
