@@ -14,7 +14,7 @@ to source such file like following
 . ~/.bashrc_rcs
 ```
 
-## PPA package
+## Debian/Ubuntu
 
 ## Non-pinning way (direct install)
 
